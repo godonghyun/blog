@@ -10,15 +10,16 @@ function App() {
     'Neardy Love',
     'Click Me'
   ]);
-  let [like, like_change] = useState(0);
-  
-  function titleChange() {
+  let [clicked, clicked_change] = useState(0);
+  let [in_val, in_val_change] = useState('');
+
+  function contentAdd() {
     // when handling list or object kind of state
     // make a copy and modify. then use state change function with that
     let new_content = [...content];
     // use spread operater to deep copy
-    // new_content.sort();
-    new_content[0] = "Cereal";
+    new_content.push(in_val);
+    // new_content[0] = "Cereal";
     content_change(new_content);
   }
 
@@ -28,37 +29,34 @@ function App() {
       <div className="black-nav">
         <div>개발 Blog</div>
       </div>
-      <button onClick={ titleChange }> change content 1 </button>
-      
-      <div className="list">
-        <h3>{content[0]} <span onClick={() => { like_change(like+1); }}>👍</span> {like} </h3>
-        <p>2월 17일 발행</p>
-        <hr />
-      </div>
-      <div className="list">
-        <h3>{content[1]}</h3>
-        <p>2월 21일 발행</p>
-        <hr />
-      </div>
-      <div className="list">
-        <h3>{content[2]}</h3>
-        <p>2월 11일 발행</p>
-        <hr />
-      </div>
+      {
+        content.map(function (con, i) {
+          return (
+            <div className="list">
+              <h3 onClick={() => { clicked_change(i) }}>{con}</h3>
+              <p>2월 17일 발행</p>
+              <hr />
+            </div>
+          )
+        })
+      }
 
-      <Modal></Modal>
-      
+      <input type="text" onChange={(e) => { in_val_change(e.target.value); }} />
+      <button onClick={contentAdd}>add</button>
+      <hr />
+      <h3>{ in_val }</h3>
+      <hr/> 
     </div>
   );
 }
 
-function Modal() {
+function Modal( props ) {
   return (
     <div className="modal">
-        <h2>제목</h2>
-        <p>날씨</p>
-        <p>상세내용</p> 
-      </div>
+      <h3>{props.title[props.clicked]} </h3>
+      <p>12월 1일 발행</p>
+      <hr></hr>
+    </div>
   )
 }
 
