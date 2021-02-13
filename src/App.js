@@ -11,14 +11,14 @@ function App() {
     'Click Me'
   ]);
   let [clicked, clicked_change] = useState(0);
-  let [in_val, in_val_change] = useState('');
+  let [ui, ui_change] = useState(false);
 
-  function contentAdd() {
+  function titleChange() {
     // when handling list or object kind of state
     // make a copy and modify. then use state change function with that
     let new_content = [...content];
     // use spread operater to deep copy
-    new_content.push(in_val);
+    new_content.sort();
     // new_content[0] = "Cereal";
     content_change(new_content);
   }
@@ -29,23 +29,22 @@ function App() {
       <div className="black-nav">
         <div>개발 Blog</div>
       </div>
-      {
-        content.map(function (con, i) {
-          return (
-            <div className="list">
-              <h3 onClick={() => { clicked_change(i) }}>{con}</h3>
-              <p>2월 17일 발행</p>
-              <hr />
-            </div>
-          )
-        })
-      }
+        {
+          content.map(function (con, i) {
+            return (
+              <div className="list">
+                <h3 onClick={()=>{clicked_change(i)}}>{con}</h3>
+                <p>2월 17일 발행</p>
+                <hr />
+              </div>
+            )
+          })
+        }
 
-      <input type="text" onChange={(e) => { in_val_change(e.target.value); }} />
-      <button onClick={contentAdd}>add</button>
-      <hr />
-      <h3>{ in_val }</h3>
-      <hr/> 
+      <button onClick={() => { ui_change(!ui);}}>열기</button>
+      {
+        ui ? <Modal contents={content} clicked={clicked} /> : null
+      }
     </div>
   );
 }
@@ -53,7 +52,7 @@ function App() {
 function Modal( props ) {
   return (
     <div className="modal">
-      <h3>{props.title[props.clicked]} </h3>
+      <h3>{props.contents[props.clicked]} </h3>
       <p>12월 1일 발행</p>
       <hr></hr>
     </div>
